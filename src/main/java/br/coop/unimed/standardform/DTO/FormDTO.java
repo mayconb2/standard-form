@@ -17,16 +17,15 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class FormDTO {
 
-    public String protocol;
-    public LocalDate date;
-    public String name;
-    public String email;
-    public Integer state;
-    public Long city;
-    public String phone;
-    public String message;
+    private String protocol;
+    private LocalDate date;
+    private String name;
+    private String email;
+    private Integer state;
+    private Long city;
+    private String phone;
+    private String message;
 
-    @Autowired
     public Form toFormModel(StateRepository stateRepository, CityRepository cityRepository) {
 
         Form formModel = new Form();

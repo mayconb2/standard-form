@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StateDTO {
 
-    public int id;
-    public String name;
-    public String federativeUnit;
+    private int id;
+    private String name;
+    private String federativeUnit;
 
     public State toStateModel() {
 

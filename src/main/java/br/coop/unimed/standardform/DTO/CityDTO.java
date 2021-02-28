@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 @AllArgsConstructor
 public class CityDTO {
 
-    public Long id;
-    public String name;
-    public Integer state;
+    private Long id;
+    private String name;
+    private Integer state;
 
     @Autowired
     public City toCityModel(StateRepository stateRepository) {

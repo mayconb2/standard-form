@@ -16,6 +16,10 @@ import java.time.LocalDate;
 public class Form {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
     private String protocol;
 
     @Column(nullable = false)
@@ -35,7 +39,7 @@ public class Form {
     @JoinColumn(name = "city", referencedColumnName = "id")
     private City city;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 11)
     private String phone;
 
     @Column(nullable = false)
