@@ -1,5 +1,6 @@
 package br.coop.unimed.standardform.model;
 
+import br.coop.unimed.standardform.DTO.FormDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,5 +40,21 @@ public class Form {
 
     @Column(nullable = false)
     private String message;
+
+    public FormDTO toDTO() {
+
+        FormDTO dto = new FormDTO();
+
+        dto.setProtocol(protocol);
+        dto.setDate(date);
+        dto.setName(name);
+        dto.setEmail(email);
+        dto.setState(state.getId());
+        dto.setCity(city.getId());
+        dto.setPhone(phone);
+        dto.setMessage(message);
+
+        return  dto;
+    }
 
 }
