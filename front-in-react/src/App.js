@@ -11,11 +11,13 @@ function App() {
   const [fedState, setFedStat] = useState(0);
   const [message, setMessage] = useState("");
 
+  const baseURL = 'http://localhost:8090/api/v1/form';
+
   Axios.defaults.headers.post['Content-Type'] ='application/json;charset=utf-8';
   Axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
   const sendForm = () => {
-    Axios.post('http://localhost:8080/api/v1/form', {
+    Axios.post(baseURL, {
       name, phone, email, city, state: fedState, message
     }).then(() => {
       console.log("sucess");
@@ -27,7 +29,7 @@ function App() {
         
         <div className="header">
           <h2>
-            Registrar Solicitação
+            Registrar Solicitação Dentro do Liferay
           </h2>
         </div>
 
