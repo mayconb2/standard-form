@@ -22,9 +22,17 @@ public class StateService {
 
         for(State state: allStates) {
 
-            statesDTO.add(state.toStateModel());
+            statesDTO.add(state.toStateDTO());
         }
 
         return statesDTO;
     }
+
+    public StateDTO findById(Integer id) {
+
+        State state = stateRepository.findById(id).orElseThrow(() -> new RuntimeException("State with " + id + " not found"));
+
+        return state.toStateDTO();
+    }
+
 }

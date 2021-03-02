@@ -10,6 +10,8 @@ function App() {
   const [city, setCity] = useState([]);
   const [fedState, setFedStat] = useState([]);
   const [message, setMessage] = useState("");
+  const [selectedState, setSelectedState] = useState(0);
+  const [selectedCity, setSelectedCity] = useState(1);
 
   const baseURL = 'http://localhost:8090/api/v1/';
 
@@ -18,7 +20,7 @@ function App() {
 
   const sendForm = () => {
     axios.post(`${baseURL}/form`, {
-      name, phone, email, city, state: fedState, message
+      name, phone, email, city: selectedCity, state: selectedState, message
     }).then(() => {
       console.log("sucess");
     })
@@ -27,7 +29,23 @@ function App() {
   const loadStates = async () => {
     const result = await axios(`${baseURL}/state/list-all`);
     setFedStat(result.data);
-    console.log(result.data);
+    // console.log(result.data);
+  }
+
+  const loadCities = async (estado) => {
+    const result = await axios(`${baseURL}//city/list-cities-from-state/${estado}`);
+    setCity(result.data);
+    // console.log(result.data);
+  }
+
+  const handleStateSelect = async (e) => {
+    const estado = e.target.value;
+    setSelectedState(e.target.value);
+    await loadCities(estado);
+  }
+
+  const handleCitySelect = (e) => {
+    setSelectedCity(e.target.value);
   }
 
   useEffect(async () => {
@@ -62,17 +80,18 @@ function App() {
         />
 
         <label>Estado</label>
-        <select>
+        <select
+          onChange={e => handleStateSelect(e)}
+        >
           {fedState.map(state => <option value={state.id}>{state.name}</option>)}
         </select>
 
         <label>Cidade</label>
-        <input 
-          type="text"
-          onChange={(event) => {
-            setCity(event.target.value)
-          }}
-        />
+        <select
+          onChange={e => handleCitySelect(e)}
+        >
+          {city.map(cityData => <option value={cityData.id}>{cityData.name}</option>)}
+        </select>
 
         <label>Telefone</label>
         <input 

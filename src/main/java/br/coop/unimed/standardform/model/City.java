@@ -1,5 +1,6 @@
 package br.coop.unimed.standardform.model;
 
+import br.coop.unimed.standardform.DTO.CityDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,5 +25,15 @@ public class City {
     @JoinColumn(name = "state", referencedColumnName = "id")
     private State state;
 
-//
+    public CityDTO toCityDTO() {
+
+        CityDTO dto = new CityDTO();
+
+        dto.setState(state.getId());
+        dto.setName(name);
+        dto.setId(id);
+
+        return dto;
+    }
+
 }

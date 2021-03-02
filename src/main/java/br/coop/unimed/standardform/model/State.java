@@ -27,7 +27,7 @@ public class State {
     @Column(name = "federative_unit")
     private String federativeUnit;
 
-    public StateDTO toStateModel() {
+    public StateDTO toStateDTO() {
 
         StateDTO stateDTO = new StateDTO();
 
