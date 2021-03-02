@@ -1,5 +1,6 @@
 package br.coop.unimed.standardform.model;
 
+import br.coop.unimed.standardform.DTO.StateDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,4 +26,15 @@ public class State {
 
     @Column(name = "federative_unit")
     private String federativeUnit;
+
+    public StateDTO toStateModel() {
+
+        StateDTO stateDTO = new StateDTO();
+
+        stateDTO.setName(name);
+        stateDTO.setId(id);
+        stateDTO.setFederativeUnit(federativeUnit);
+
+        return stateDTO;
+    }
 }

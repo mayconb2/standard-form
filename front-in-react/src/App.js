@@ -1,28 +1,38 @@
+import React, { useState, useEffect } from 'react';
 import './App.css';
-import {useState} from "react";
-import Axios from "axios";
+import axios from "axios";
 
 function App() {
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [city, setCity] = useState(0);
-  const [fedState, setFedStat] = useState(0);
+  const [city, setCity] = useState([]);
+  const [fedState, setFedStat] = useState([]);
   const [message, setMessage] = useState("");
 
-  const baseURL = 'http://localhost:8090/api/v1/form';
+  const baseURL = 'http://localhost:8090/api/v1/';
 
-  Axios.defaults.headers.post['Content-Type'] ='application/json;charset=utf-8';
-  Axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+  axios.defaults.headers.post['Content-Type'] ='application/json;charset=utf-8';
+  axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
   const sendForm = () => {
-    Axios.post(baseURL, {
+    axios.post(`${baseURL}/form`, {
       name, phone, email, city, state: fedState, message
     }).then(() => {
       console.log("sucess");
     })
   }
+
+  const loadStates = async () => {
+    const result = await axios(`${baseURL}/state/list-all`);
+    setFedStat(result.data);
+    console.log(result.data);
+  }
+
+  useEffect(async () => {
+    loadStates();
+  }, [name], [phone], [email], [city], [message]);
 
   return (
     <div className="App">
@@ -52,12 +62,9 @@ function App() {
         />
 
         <label>Estado</label>
-        <input 
-          type="text"
-          onChange={(event) => {
-            setFedStat(event.target.value)
-          }}
-        />
+        <select>
+          {fedState.map(state => <option value={state.id}>{state.name}</option>)}
+        </select>
 
         <label>Cidade</label>
         <input 
