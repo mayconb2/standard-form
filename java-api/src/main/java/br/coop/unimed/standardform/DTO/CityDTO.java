@@ -25,7 +25,6 @@ public class CityDTO {
         city.setId(id);
         city.setName(name);
 
-        //todo criar uma exception
         State stateModel = stateRepository.findById(state).orElseThrow(() -> new RuntimeException("State with " + state + " not found"));
 
         city.setState(stateModel);

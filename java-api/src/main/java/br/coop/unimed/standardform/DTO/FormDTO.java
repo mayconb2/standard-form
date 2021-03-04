@@ -8,7 +8,6 @@ import br.coop.unimed.standardform.repository.StateRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 
@@ -30,10 +29,8 @@ public class FormDTO {
 
         Form formModel = new Form();
 
-        //todo criar uma exception
         City cityModel = cityRepository.findById(city).orElseThrow(() -> new RuntimeException("City with " + city + " not found"));
 
-        //todo criar uma exception
         State stateModel = stateRepository.findById(state).orElseThrow(() -> new RuntimeException("State with " + state + " not found"));
 
         formModel.setProtocol(protocol);

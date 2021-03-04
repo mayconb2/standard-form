@@ -5,11 +5,10 @@ import br.coop.unimed.standardform.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping(value = "/api/v1/city")
 public class CityController {
 

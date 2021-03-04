@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import axios from "axios";
 
@@ -13,14 +13,16 @@ function App() {
   const [selectedState, setSelectedState] = useState(1);
   const [selectedCity, setSelectedCity] = useState(0);
 
-  const selectInputRef = useRef();
-
   const baseURL = 'http://localhost:8090/api/v1/';
 
   axios.defaults.headers.post['Content-Type'] ='application/json;charset=utf-8';
   axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
   const sendForm = () => {
+    if (!containAllInformation()) {
+      alert('Todos os campos são obrigatórios!');
+      return
+    }
     axios.post(`${baseURL}/form`, {
       name, phone, email, city: selectedCity, state: selectedState, message
     }).then((data) => {
@@ -35,6 +37,12 @@ function App() {
     })
   }
 
+  const containAllInformation = () => {
+    if (!name || !email || !selectedCity || !selectedState || !phone || message) {
+      return false;
+    }
+  }
+
   const clearForm = () => {
     setName('');
     setPhone('');
@@ -42,9 +50,7 @@ function App() {
     setSelectedState('');
     setSelectedCity('');
     setMessage('');
-    // selectInputRef.current.select.;
-    
-    
+
   }
 
   const loadStates = async () => {
@@ -109,7 +115,6 @@ function App() {
 
         <label>Estado</label>
         <select
-          ref={selectInputRef}
           defaultValue={{label: "Selecione um estado", value: 0}}
           onChange={e => handleStateSelect(e)}
         >
