@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import axios from "axios";
 
@@ -8,10 +8,12 @@ function App() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [city, setCity] = useState([]);
-  const [fedState, setFedStat] = useState([]);
+  const [fedState, setFedStat] = useState([{name: 'Selecione um estado', id: 0, ferative_unit: 'SS'}]);
   const [message, setMessage] = useState("");
-  const [selectedState, setSelectedState] = useState(0);
-  const [selectedCity, setSelectedCity] = useState(1);
+  const [selectedState, setSelectedState] = useState(1);
+  const [selectedCity, setSelectedCity] = useState(0);
+
+  const selectInputRef = useRef();
 
   const baseURL = 'http://localhost:8090/api/v1/';
 
@@ -21,21 +23,39 @@ function App() {
   const sendForm = () => {
     axios.post(`${baseURL}/form`, {
       name, phone, email, city: selectedCity, state: selectedState, message
-    }).then(() => {
-      console.log("sucess");
+    }).then((data) => {
+      alert(`Agendamento Realizado! Seu protocolo é ${data.data.protocol}`)
+      // clearForm();
+    }).catch(e => {
+      console.log(e);
+      alert('Não foi possível realizar o agendamento. Tenta mais tarde');
+      // clearForm();
+    }).finally(() => {
+      clearForm();
     })
+  }
+
+  const clearForm = () => {
+    setName('');
+    setPhone('');
+    setEmail('');
+    setSelectedState('');
+    setSelectedCity('');
+    setMessage('');
+    // selectInputRef.current.select.;
+    
+    
   }
 
   const loadStates = async () => {
     const result = await axios(`${baseURL}/state/list-all`);
-    setFedStat(result.data);
-    // console.log(result.data);
+    setFedStat([...fedState, ...result.data]);
   }
 
   const loadCities = async (estado) => {
     const result = await axios(`${baseURL}//city/list-cities-from-state/${estado}`);
-    setCity(result.data);
-    // console.log(result.data);
+    const orderedCities = result.data.sort((a,b) => {return a.name.localeCompare(b.name)})
+    setCity(orderedCities);
   }
 
   const handleStateSelect = async (e) => {
@@ -50,7 +70,13 @@ function App() {
 
   useEffect(async () => {
     loadStates();
-  }, [name], [phone], [email], [city], [message]);
+  }, []);
+
+  useEffect(() => {
+    if(city.length > 0 ) {
+      setSelectedCity(city[0].id)
+    }
+  }, [city]);
 
   return (
     <div className="App">
@@ -65,6 +91,7 @@ function App() {
 
         <label>Nome:</label>
         <input 
+          value={name}
           type="text"
           onChange={(event) => {
             setName(event.target.value)
@@ -73,6 +100,7 @@ function App() {
 
         <label>E-mail:</label>
         <input 
+          value={email}
           type="text"
           onChange={(event) => {
             setEmail(event.target.value)
@@ -81,6 +109,8 @@ function App() {
 
         <label>Estado</label>
         <select
+          ref={selectInputRef}
+          defaultValue={{label: "Selecione um estado", value: 0}}
           onChange={e => handleStateSelect(e)}
         >
           {fedState.map(state => <option value={state.id}>{state.name}</option>)}
@@ -95,6 +125,7 @@ function App() {
 
         <label>Telefone</label>
         <input 
+          value={phone}
           type="text"
           onChange={(event) => {
             setPhone(event.target.value)
@@ -103,6 +134,7 @@ function App() {
 
         <label>Mensagem</label>
         <input 
+          value={message}
           type="text"
           onChange={(event) => {
             setMessage(event.target.value)
