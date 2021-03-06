@@ -2,15 +2,12 @@ version: '3'
 
 #Define services
 services:
-
   #PostgreSQL Database for the application
   db-postgres:
     image: "postgres:alpine"
     container_name: db-postgres
     #Volume mounted for database for the storage
     volumes:
-      # - ./db.sql:/docker-entrypoint-initdb.d/1-data.sql
-      # - ./table.sql:/docker-entrypoint-initdb.d/2-table.sql
       - postgres-data:/var/lib/postgresql/data
     ports:
       - 5432:5432 # Forward the exposed port 5432 on the container to port 5432 on the host machine
@@ -22,10 +19,10 @@ services:
       - POSTGRES_PASSWORD=postgres
 
   #Back-end Spring Boot Application
-  springboot-app:
-    #The docker file in scrum-app build the jar and provides the docker image with the following name.
+  java-api:
+    #The docker file in kava-api build the jar and provides the docker image with the following name.
     build: ./java-api
-    container_name: java-spring
+    container_name: java-api
 
     depends_on:
       - db-postgres
@@ -37,7 +34,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
-      - 8090:8090 # Forward the exposed port 8080 on the container to port 8080 on the host machine
+      - 8090:8090 # Forward the exposed port 8090 on the container to port 8090 on the host machine
     tty: true
     links:
       - db-postgres

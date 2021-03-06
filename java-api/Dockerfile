@@ -1,18 +1,12 @@
-# FROM maven:3.6.1-jdk-8-slim AS build
-# RUN mkdir -p /workspace
-# WORKDIR /workspace
-# COPY pom.xml /workspace
-# COPY src /workspace/src
-# # RUN mvn -f pom.xml clean package
+FROM maven:3.6.1-jdk-8-slim as build
 
-# FROM openjdk:8-alpine
-# COPY --from=build /workspace/target/*.jar app.jar
-# EXPOSE 8090
-# ENTRYPOINT ["java","-jar","app.jar"]
+ADD . ./workspace
+WORKDIR /workspace
 
-# standard-form-0.0.1-SNAPSHOT.jar
+RUN mvn clean install
 
- 
 FROM openjdk:8-alpine
-ADD target/standard-form-0.0.1-SNAPSHOT.jar app.jar
+
+COPY --from=build /workspace//target/standard-form-0.0.1-SNAPSHOT.jar app.jar
+
 ENTRYPOINT ["java","-jar","app.jar"]
