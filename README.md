@@ -2,6 +2,8 @@
 
 O desafio consiste em criar um um formlário padrão para registrar solicitações. Todos as informações são necessárias.
 
+Para poder executar esta aplicação em seu ambiente de desenvolvimento, você precisa ter o docker instalado na sua máquina.
+
 As tecnologias usadas foram:
 - [Java](https://www.java.com/pt-BR/);
 - [Spring](https://spring.io/);
